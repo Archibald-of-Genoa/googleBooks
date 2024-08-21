@@ -27,7 +27,9 @@ export default {
       },
       width: {
         '93': "23.25rem",
+        '1440': '1440px'
       },
+
     },
   },
   plugins: [],

@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+
+    .header {
+        padding-top: 47px;
+        padding-bottom: 40px;
+        @apply px-5;
+    }
+
+    @media (min-width: 1440px) {
+        .header {
+            padding-top: 47px;
+            padding-bottom: 40px;
+            padding-left: 166px;
+            padding-right: 158.16px;
+    
+        }
+    }
+
+}
