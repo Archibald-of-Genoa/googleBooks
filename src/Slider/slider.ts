@@ -25,6 +25,7 @@ class Slider {
     //Чтобы имитировать бесконечную карусель, добавляем клоны первого и
     //последнего изображений
 
+    // чет я не заценил идею, у тебя все-равно он в конце мотанет в самое начало
     const firstClone = this.slideElements[0].cloneNode(true) as HTMLElement;
     const lastClone = this.slideElements[this.totalSlides - 1].cloneNode(true) as HTMLElement;
 
@@ -34,8 +35,24 @@ class Slider {
     this.nextButton.addEventListener("click", () => this.showNextSlide());
     this.prevButton.addEventListener("click", () => this.showPrevSlide());
     this.slides.addEventListener("transitionend", () => this.handleTransitionEnd());
+    // тебе сразу надо запустить его, не?
+    // this.moveSlider("next");
+    this.showNextSlide();
   }
 
+  // у тебя евент будет срабатывать только когда транзишн завершится
+  // если ты бурно мышкой по кнопкам кликать начнешь, у тебя индекс вывалится из размеров массива, или в минус уйдет
+
+  // можешь вообще один метод сделать
+  // примерно так (но это неточно)
+  private moveSlider(direction: "prev" | "next") {
+    (direction == "prev") ?
+      (this.currentIndex > 0) ? this.currentIndex-- : (this.currentIndex = 0)
+      :
+      (this.currentIndex === this.totalSlides.length) ? (this.currentIndex = 0) : this.currentIndex++
+    this.updateSlider()
+  }
+  
   private showNextSlide() {
     this.currentIndex++;
     this.updateSlider();
@@ -57,21 +74,22 @@ class Slider {
     this.slides.style.transform = `translateX(${offset}%)`;
   }
 
+  private transition() {
+    this.slides.style.transform = `translateX(${-this.currentIndex * 100}%)`;
+    setTimeout(() => {
+      this.slides.style.transition = `transform 0.5s ease-in-out`;
+    }, 20);
+  }
+
   private handleTransitionEnd() {
-    if (this.currentIndex === this.totalSlides + 1) {
+    if (this.currentIndex > this.totalSlides) {
       this.slides.style.transition = "none";
       this.currentIndex = 1;
-      this.slides.style.transform = `translateX(${-this.currentIndex * 100}%)`;
-      setTimeout(() => {
-        this.slides.style.transition = `transform 0.5s ease-in-out`;
-      }, 20);
-    } else if (this.currentIndex === 0) {
+      this.transition();
+    } else if (this.currentIndex < 1) {
       this.slides.style.transition = "none";
       this.currentIndex = this.totalSlides;
-      this.slides.style.transform = `translateX(${-this.currentIndex * 100}%)`;
-      setTimeout(() => {
-        this.slides.style.transition = `transform 0.5s ease-in-out`;
-      }, 20);
+      this.transition();
     }
   }
 }
