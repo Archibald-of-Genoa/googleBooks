@@ -15,7 +15,6 @@
   <body class="container mx-auto bg-body text-text-black font-montserrat">
     <header class="header">
       <div class="text-text-gray font-bold flex justify-between items-center">
-
         <div class="text-2xl text-text-black font-bold">Bookshop</div>
 
         <div class="w-93 text-xs flex justify-between items-center gap-x-10">
@@ -97,5 +96,22 @@
         </div>
       </div>
     </header>
+
+    <div class="slider relative w-[1120px] overflow-hidden">
+      <div class="slides flex transition-transform duration-500 ease-in-out">
+        <div class="slide min-w-[1120px] h-[702px] flex-shrink-0">
+          <img class="w-full h-full object-cover" src="./src/assets/slide1.png" alt="Black friday sale image">
+        </div>
+        <div class="slide min-w-[1120px] h-[702px] flex-shrink-0">
+          <img class="w-full h-full object-cover" src="./src/assets/slide2.png" alt="Top 10 books image">
+        </div>
+        <div class="slide min-w-[1120px] h-[702px] flex-shrink-0">
+          <img class="w-full h-full object-cover" src="./src/assets/slide3.png" alt="Our cozy books selection">
+        </div>
+      </div>
+      <button class="prev absolute top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white px-3 py-2">Prev</button>
+<button class="next absolute top-1/2 right-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white px-3 py-2">Next</button>
+
+    </div> 
   </body>
 </html>
