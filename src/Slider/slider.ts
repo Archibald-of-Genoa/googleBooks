@@ -8,19 +8,34 @@
 
 export class Slider {
   currentIndex: number = 1;
-  slider: HTMLDivElement;
-  slides: NodeListOf<HTMLElement>;
-  // totalSlides: number;
+  slides: HTMLDivElement;
+  slideElements: NodeListOf<HTMLElement>;
+  totalSlides: number;
 
   constructor() {
-    this.slider = document.querySelector('.slider')!;
-    this.slides = document.querySelectorAll('.slide')!;
-    this.showSlides(); 
+    this.slides = document.querySelector('.slides')!;
+    this.slideElements = document.querySelectorAll('.slide')!;
+    this.totalSlides = this.slideElements.length;
+
+    const firstClone = this.slideElements[0].cloneNode(true) as HTMLDivElement;
+    const lastClone = this.slideElements[this.totalSlides - 1].cloneNode(true) as HTMLDivElement;
+
+    this.slides.prepend(lastClone);
+    this.slides.append(firstClone);
+
+    this.switchSlide();
+
   }
 
-  showSlides() {
-    console.log(this.slides);
+  switchSlide() {
+
+    
+    this.slides.addEventListener('click', () => {
+      this.currentIndex++;
+      this.slides.style.transform = `translateX(-${this.currentIndex * 100}%)`
+    })
   }
-  
+
+ 
 
 }

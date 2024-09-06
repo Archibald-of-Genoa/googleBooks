@@ -22,7 +22,7 @@ export default {
       container: {
         center: true,
         screens: {
-          DEFAULT: "1440px",
+          'lg': "1440px",
         },
       },
       width: {
