@@ -12,6 +12,8 @@ export default {
       "text-black": "#1C2A39",
       "text-gray": "#5C6A79",
       "counter-red": "#FF353A",
+      "violet": "#9E98DC",
+      "lilac": "#FF9FE6"
     },
 
     fontFamily: {
