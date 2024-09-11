@@ -10,6 +10,16 @@
         @apply px-5;
     }
 
+    .dot.active {
+        @apply bg-violet;
+    }
+
+    .dot {
+        @apply bg-pale-violet;
+    }
+
+    
+
     @media (min-width: 1440px) {
         .header {
             padding-top: 47px;

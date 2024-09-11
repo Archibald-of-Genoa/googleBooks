@@ -12,11 +12,16 @@ export class Slider {
   slideElements: NodeListOf<HTMLElement>;
   totalSlides: number;
   interval!: number;
+  dot: HTMLButtonElement;
+  dots: NodeListOf<HTMLButtonElement>;
 
   constructor() {
     this.slides = document.querySelector(".slides")!;
     this.slideElements = document.querySelectorAll(".slide")!;
     this.totalSlides = this.slideElements.length;
+
+    this.dot = document.querySelector('.dot')!;
+    this.dots = document.querySelectorAll('.dot')!;
 
     const firstClone = this.slideElements[0].cloneNode(true) as HTMLDivElement;
     const lastClone = this.slideElements[this.totalSlides - 1].cloneNode(true) as HTMLDivElement;
@@ -29,6 +34,10 @@ export class Slider {
     this.slides.style.transform = `translateX(-100%)`;
 
     this.startAutoSlide();
+
+    this.dots.forEach(d => {
+      d.addEventListener('click', () => this.dotSwitcher(d))
+    })
   }
 
   switchSlide() {
@@ -57,6 +66,13 @@ export class Slider {
         this.slides.style.transform = `translateX(-${this.totalSlides * 100}%)`;
       }, 500);
     }
+  }
+
+  dotSwitcher(dot: HTMLButtonElement) {
+    this.dots.forEach(d => {
+      d.classList.remove('active')
+    })
+    dot.classList.add('active')
   }
 
   startAutoSlide() {
