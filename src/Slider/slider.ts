@@ -6,6 +6,8 @@
 // карусели. Также применил вместо пенсионерских методов appendChild и insertBefore
 // модные и молодежные append и prepend
 
+type direction = "prev" | "next";
+
 export class Slider {
   currentIndex: number = 1;
   slides: HTMLDivElement;
@@ -33,14 +35,14 @@ export class Slider {
     // Сразу устанавливаем translateX на первый реальный слайд
     this.slides.style.transform = `translateX(-100%)`;
 
-    this.startAutoSlide();
+    this.startAutoSlide("next");
 
     this.dots.forEach((d) => {
       d.addEventListener("click", () => this.dotSwitcher(d));
     });
   }
 
-  moveSlide(direction: "prev" | "next") {
+  moveSlide(direction: direction) {
     if (direction == "next") {
       this.currentIndex++;
       const offset = -this.currentIndex * 100;
@@ -82,9 +84,9 @@ export class Slider {
     dot.classList.add("active");
   }
 
-  startAutoSlide() {
+  startAutoSlide(direction: direction) {
     this.interval = setInterval(() => {
-      this.moveSlide("prev");
+      this.moveSlide(direction);
     }, 3000);
   }
 }
