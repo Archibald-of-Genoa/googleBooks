@@ -20,8 +20,8 @@ export class Slider {
     this.slideElements = document.querySelectorAll(".slide")!;
     this.totalSlides = this.slideElements.length;
 
-    this.dot = document.querySelector('.dot')!;
-    this.dots = document.querySelectorAll('.dot')!;
+    this.dot = document.querySelector(".dot")!;
+    this.dots = document.querySelectorAll(".dot")!;
 
     const firstClone = this.slideElements[0].cloneNode(true) as HTMLDivElement;
     const lastClone = this.slideElements[this.totalSlides - 1].cloneNode(true) as HTMLDivElement;
@@ -35,50 +35,56 @@ export class Slider {
 
     this.startAutoSlide();
 
-    this.dots.forEach(d => {
-      d.addEventListener('click', () => this.dotSwitcher(d))
-    })
+    this.dots.forEach((d) => {
+      d.addEventListener("click", () => this.dotSwitcher(d));
+    });
   }
 
-  switchSlide() {
-    this.currentIndex++;
-    const offset = -this.currentIndex * 100;
+  moveSlide(direction: "prev" | "next") {
+    if (direction == "next") {
+      this.currentIndex++;
+      const offset = -this.currentIndex * 100;
 
-    // Добавляем плавный переход
-    this.slides.style.transition = `transform 0.5s ease`;
-    this.slides.style.transform = `translateX(${offset}%)`;
+      // Добавляем плавный переход
+      this.slides.style.transition = `transform 0.5s ease`;
+      this.slides.style.transform = `translateX(${offset}%)`;
 
-    // Проверяем достижение конца слайдов
-    if (this.currentIndex === this.totalSlides + 1) {
-      setTimeout(() => {
-        // Отключаем transition, чтобы скрыть резкий переход
-        this.slides.style.transition = "none";
-        this.currentIndex = 1;
-        this.slides.style.transform = `translateX(-100%)`;
-      }, 500);
-    }
+      // Проверяем достижение конца слайдов
+      if (this.currentIndex === this.totalSlides + 1) {
+        setTimeout(() => {
+          // Отключаем transition, чтобы скрыть резкий переход
+          this.slides.style.transition = "none";
+          this.currentIndex = 1;
+          this.slides.style.transform = `translateX(-100%)`;
+        }, 500);
+      }
+    } else {
+      this.currentIndex--;
+      const offset = -this.currentIndex * 100;
+      this.slides.style.transition = `transform 0.5s ease`;
+      this.slides.style.transform = `translateX(${offset}%)`;
 
-    // Переход в начало при достижении первого клонированного слайда
-    if (this.currentIndex === 0) {
-      setTimeout(() => {
-        this.slides.style.transition = "none";
-        this.currentIndex = this.totalSlides;
-        this.slides.style.transform = `translateX(-${this.totalSlides * 100}%)`;
-      }, 500);
+      // Переход в начало при достижении первого клонированного слайда
+      if (this.currentIndex === 0) {
+        setTimeout(() => {
+          this.slides.style.transition = "none";
+          this.currentIndex = this.totalSlides;
+          this.slides.style.transform = `translateX(-${this.totalSlides * 100}%)`;
+        }, 500);
+      }
     }
   }
 
   dotSwitcher(dot: HTMLButtonElement) {
-    this.dots.forEach(d => {
-      d.classList.remove('active')
-    })
-    dot.classList.add('active')
+    this.dots.forEach((d) => {
+      d.classList.remove("active");
+    });
+    dot.classList.add("active");
   }
 
   startAutoSlide() {
     this.interval = setInterval(() => {
-      this.switchSlide();
+      this.moveSlide("prev");
     }, 3000);
   }
 }
-
