@@ -16,6 +16,7 @@ export class Slider {
   interval!: number;
   dot: HTMLButtonElement;
   dots: NodeListOf<HTMLButtonElement>;
+  dotIndex: number = 0;
 
   constructor() {
     this.slides = document.querySelector(".slides")!;
@@ -35,7 +36,7 @@ export class Slider {
     // Сразу устанавливаем translateX на первый реальный слайд
     this.slides.style.transform = `translateX(-100%)`;
 
-    this.startAutoSlide("next");
+    this.startAutoSlide("prev");
 
     this.dots.forEach((d) => {
       d.addEventListener("click", () => this.dotSwitcher(d));
@@ -43,37 +44,40 @@ export class Slider {
   }
 
   moveSlide(direction: direction) {
-    if (direction == "next") {
-      this.currentIndex++;
-      const offset = -this.currentIndex * 100;
+    this.updateIndex(direction);
 
-      // Добавляем плавный переход
-      this.slides.style.transition = `transform 0.5s ease`;
-      this.slides.style.transform = `translateX(${offset}%)`;
+    this.setSlidePosition();
 
-      // Проверяем достижение конца слайдов
-      if (this.currentIndex === this.totalSlides + 1) {
-        setTimeout(() => {
-          // Отключаем transition, чтобы скрыть резкий переход
-          this.slides.style.transition = "none";
-          this.currentIndex = 1;
-          this.slides.style.transform = `translateX(-100%)`;
-        }, 500);
-      }
-    } else {
-      this.currentIndex--;
-      const offset = -this.currentIndex * 100;
-      this.slides.style.transition = `transform 0.5s ease`;
-      this.slides.style.transform = `translateX(${offset}%)`;
+    this.handleCloneEdges();
+  }
 
-      // Переход в начало при достижении первого клонированного слайда
-      if (this.currentIndex === 0) {
-        setTimeout(() => {
-          this.slides.style.transition = "none";
-          this.currentIndex = this.totalSlides;
-          this.slides.style.transform = `translateX(-${this.totalSlides * 100}%)`;
-        }, 500);
-      }
+  // Обновление индекса в зависимости от направления
+  updateIndex(direction: direction) {
+    direction == "next" ? this.currentIndex++ : this.currentIndex--;
+  }
+
+  // Перемещаем слайд в нужное место
+  setSlidePosition() {
+    const offset = -this.currentIndex * 100;
+    this.slides.style.transition = `transform 0.5s ease`;
+    this.slides.style.transform = `translateX(${offset}%)`;
+  }
+
+  // Обрабатываем границы (переход на клонированные слайды)
+  handleCloneEdges() {
+    if (this.currentIndex === this.totalSlides + 1) {
+      setTimeout(() => {
+        // Отключаем transition, чтобы скрыть резкий переход
+        this.slides.style.transition = "none";
+        this.currentIndex = 1;
+        this.slides.style.transform = `translateX(-100%)`;
+      }, 500);
+    } else if (this.currentIndex === 0) {
+      setTimeout(() => {
+        this.slides.style.transition = "none";
+        this.currentIndex = this.totalSlides;
+        this.slides.style.transform = `translateX(-${this.totalSlides * 100}%)`;
+      }, 500);
     }
   }
 
