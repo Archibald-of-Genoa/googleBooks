@@ -16,7 +16,7 @@ export class Slider {
   interval!: number;
   dot: HTMLButtonElement;
   dots: NodeListOf<HTMLButtonElement>;
-  dotIndex: number = 0;
+  dotIndex: number = this.currentIndex - 1;
 
   constructor() {
     this.slides = document.querySelector(".slides")!;
@@ -36,10 +36,12 @@ export class Slider {
     // Сразу устанавливаем translateX на первый реальный слайд
     this.slides.style.transform = `translateX(-100%)`;
 
-    this.startAutoSlide("prev");
+    this.dotSwitcher(this.dotIndex);
 
-    this.dots.forEach((d) => {
-      d.addEventListener("click", () => this.dotSwitcher(d));
+    this.startAutoSlide("next");
+
+    this.dots.forEach((d, index) => {
+      d.addEventListener("click", () => this.dotSwitcher(index));
     });
   }
 
@@ -49,6 +51,7 @@ export class Slider {
     this.setSlidePosition();
 
     this.handleCloneEdges();
+    this.dotSwitcher(this.currentIndex)
   }
 
   // Обновление индекса в зависимости от направления
@@ -81,11 +84,22 @@ export class Slider {
     }
   }
 
-  dotSwitcher(dot: HTMLButtonElement) {
-    this.dots.forEach((d) => {
-      d.classList.remove("active");
-    });
-    dot.classList.add("active");
+  dotSwitcher(dotIndex: number) {
+    // Убираем активный класс у всех точек
+    this.dots.forEach((dot) => dot.classList.remove("active"));
+
+    // Если текущий слайд не является клонированным (не равен 0 или totalSlides + 1)
+    if (this.currentIndex > 0 && this.currentIndex <= this.totalSlides) {
+      this.dots[this.currentIndex - 1].classList.add("active");
+    } else if (this.currentIndex === 0) {
+      // Если слайд на позиции 0, то это последний реальный слайд
+      this.dots[this.totalSlides - 1].classList.add("active");
+    } else if (this.currentIndex === this.totalSlides + 1) {
+      // Если слайд на позиции totalSlides + 1, то это первый реальный слайд
+      this.dots[0].classList.add("active");
+    }
+
+    this.dotIndex = this.currentIndex - 1;
   }
 
   startAutoSlide(direction: direction) {
