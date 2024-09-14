@@ -36,12 +36,12 @@ export class Slider {
     // Сразу устанавливаем translateX на первый реальный слайд
     this.slides.style.transform = `translateX(-100%)`;
 
-    this.dotSwitcher(this.dotIndex);
+    this.dotSwitcher();
 
-    this.startAutoSlide("next");
+    this.startAutoSlide("prev");
 
-    this.dots.forEach((d, index) => {
-      d.addEventListener("click", () => this.dotSwitcher(index));
+    this.dots.forEach((d) => {
+      d.addEventListener("click", () => this.dotSwitcher());
     });
   }
 
@@ -51,7 +51,7 @@ export class Slider {
     this.setSlidePosition();
 
     this.handleCloneEdges();
-    this.dotSwitcher(this.currentIndex)
+    this.dotSwitcher();
   }
 
   // Обновление индекса в зависимости от направления
@@ -84,18 +84,14 @@ export class Slider {
     }
   }
 
-  dotSwitcher(dotIndex: number) {
-    // Убираем активный класс у всех точек
+  dotSwitcher() {
     this.dots.forEach((dot) => dot.classList.remove("active"));
 
-    // Если текущий слайд не является клонированным (не равен 0 или totalSlides + 1)
     if (this.currentIndex > 0 && this.currentIndex <= this.totalSlides) {
       this.dots[this.currentIndex - 1].classList.add("active");
     } else if (this.currentIndex === 0) {
-      // Если слайд на позиции 0, то это последний реальный слайд
       this.dots[this.totalSlides - 1].classList.add("active");
     } else if (this.currentIndex === this.totalSlides + 1) {
-      // Если слайд на позиции totalSlides + 1, то это первый реальный слайд
       this.dots[0].classList.add("active");
     }
 
