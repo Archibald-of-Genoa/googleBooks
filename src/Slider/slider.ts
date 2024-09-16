@@ -1,7 +1,7 @@
-// Я решил не вставлять свой первый слайдер из проекта для ремонтной конторы,
+// Я решил не вставлять свой первый слайдер (курильщика) из проекта для ремонтной конторы,
 // так как он совсем уж топорный, совсем не модульный и совсем уж привязан к
 // проекту, для которого он написан. Да ещё и написан на чистом JS. Поэтому ниже
-// представлен очень простой, но функциональный слайдер на TS. Здесь я
+// представлен слайдер здорового человека на TS. Здесь я
 // придерживался тактики клонирования слайдов для создания эффекта бесконечной
 // карусели. Также применил вместо пенсионерских методов appendChild и insertBefore
 // модные и молодежные append и prepend
@@ -38,20 +38,41 @@ export class Slider {
 
     this.dotSwitcher();
 
-    this.startAutoSlide("prev");
+    this.startAutoSlide("next");
 
     this.dots.forEach((d) => {
-      d.addEventListener("click", () => this.dotSwitcher());
+      d.addEventListener("click", (e) => {
+        const target = e.target as HTMLButtonElement;
+        const dotPos = parseInt(target.dataset.pos!);
+        this.goToSlide(dotPos);
+      });
     });
+  }
+
+  // Метод для перехода к слайду по индексу
+  goToSlide(index: number, withTransition: boolean = true) {
+    clearInterval(this.interval);
+    this.currentIndex = index;
+
+    withTransition
+      ? (this.slides.style.transition = "transform 0.5s ease")
+      : (this.slides.style.transition = "none");
+
+    this.slides.style.transform = `translateX(-${index * 100}%)`;
+
+    // Обновляем активные точки
+    this.dotSwitcher();
+
+    // Обрабатываем клоны (при необходимости)
+    this.handleCloneEdges();
+
+    this.startAutoSlide('next');
   }
 
   moveSlide(direction: direction) {
     this.updateIndex(direction);
 
-    this.setSlidePosition();
-
-    this.handleCloneEdges();
-    this.dotSwitcher();
+    this.goToSlide(this.currentIndex);
   }
 
   // Обновление индекса в зависимости от направления
