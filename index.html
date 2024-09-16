@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,19 +12,23 @@
     />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
-  <body class="container mx-auto bg-body text-text-black font-montserrat">
+  <body class="container mx-auto bg-body font-montserrat text-text-black">
     <header class="header mx-auto w-[1440px]">
-      <div class="text-text-gray font-bold flex justify-between items-center">
-        <div class="text-2xl text-text-black font-bold">Bookshop</div>
+      <div class="flex items-center justify-between font-bold text-text-gray">
+        <div class="text-2xl font-bold text-text-black">Bookshop</div>
 
-        <div class="w-93 text-xs flex justify-between items-center gap-x-10">
-          <a href="#" class="text-selected-text text-text-black font-bold">Books</a>
+        <div class="flex w-93 items-center justify-between gap-x-10 text-xs">
+          <a href="#" class="text-selected-text font-bold text-text-black"
+            >Books</a
+          >
           <a href="#Audiobooks">Audiobooks</a>
-          <a href="#Stationary&Gifts" class="whitespace-nowrap">Stationary & Gifts</a>
+          <a href="#Stationary&Gifts" class="whitespace-nowrap"
+            >Stationary & Gifts</a
+          >
           <a href="#Blog">Blog</a>
         </div>
 
-        <div class="flex justify-between items-center gap-x-10">
+        <div class="flex items-center justify-between gap-x-10">
           <svg
             width="12"
             height="15"
@@ -97,33 +101,35 @@
       </div>
     </header>
 
-    <div class="slider mx-auto relative w-[1120px] overflow-hidden">
+    <div class="slider relative mx-auto w-[1120px] overflow-hidden">
       <div class="slides flex">
-        <div class="slide min-w-[1120px] h-[702px] flex-shrink-0">
+        <div class="slide h-[702px] min-w-[1120px] flex-shrink-0">
           <img
-            class="w-full h-full object-none"
+            class="h-full w-full object-none"
             src="./src/assets/slide1.png"
             alt="Black friday sale image"
           />
         </div>
-        <div class="slide min-w-[1120px] h-[702px] flex-shrink-0">
+        <div class="slide h-[702px] min-w-[1120px] flex-shrink-0">
           <img
-            class="w-full h-full object-none"
+            class="h-full w-full object-none"
             src="./src/assets/slide2.png"
             alt="Top 10 books image"
           />
         </div>
-        <div class="slide min-w-[1120px] h-[702px] flex-shrink-0">
+        <div class="slide h-[702px] min-w-[1120px] flex-shrink-0">
           <img
-            class="w-full h-full object-none"
+            class="h-full w-full object-none"
             src="./src/assets/slide3.png"
             alt="Our cozy books selection"
           />
         </div>
       </div>
     </div>
-    <div class="w-[149px] h-[204px] absolute top-[195px] right-[117px] z-10 px-5 pb-5 bg-violet flex flex-col justify-end items-start drop-shadow-md">
-      <a class="uppercase font-bold" href="#">change old book on new </a>
+    <div
+      class="absolute right-[117px] top-[195px] z-10 flex h-[204px] w-[149px] flex-col items-start justify-end bg-violet px-5 pb-5 drop-shadow-md"
+    >
+      <a class="font-bold uppercase" href="#">change old book on new </a>
       <div class="cursor-pointer">
         <svg
           width="57"
@@ -137,11 +143,10 @@
         </svg>
       </div>
     </div>
-    <div class="w-[137px] h-[273px] absolute top-[475px] right-0 px-5 pb-5 bg-lilac flex flex-col justify-end items-start drop-shadow-md">
-      <a class="uppercase font-bold" href="#">top
-        100
-        books
-        2022 </a>
+    <div
+      class="absolute right-0 top-[475px] flex h-[273px] w-[137px] flex-col items-start justify-end bg-lilac px-5 pb-5 drop-shadow-md"
+    >
+      <a class="font-bold uppercase" href="#">top 100 books 2022 </a>
       <div class="cursor-pointer">
         <svg
           width="57"
@@ -156,12 +161,13 @@
       </div>
     </div>
 
-    <div class="mx-auto flex justify-center items-center gap-x-3" >
-      <button class="dot active size-3 mt-4 rounded-full" data-pos="1"></button>
-      <button class="dot size-3 mt-4 rounded-full" data-pos="2"></button>
-      <button class="dot size-3 mt-4 rounded-full" data-pos="3"></button>
+    <div class="mx-auto flex items-center justify-center gap-x-3">
+      <button class="dot active mt-4 size-3 rounded-full" data-pos="1"></button>
+      <button class="dot mt-4 size-3 rounded-full" data-pos="2"></button>
+      <button class="dot mt-4 size-3 rounded-full" data-pos="3"></button>
     </div>
-    <div class="mx-auto mt-[125px]" >sfsd</div>
-    <script type="module" src="/src/main.ts"></script>
+    <div class="mx-auto mt-[125px]">sfsd</div>
+
+        <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
