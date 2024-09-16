@@ -6,112 +6,88 @@
 // карусели. Также применил вместо пенсионерских методов appendChild и insertBefore
 // модные и молодежные append и prepend
 
-type direction = "prev" | "next";
-
 export class Slider {
   currentIndex: number = 1;
-  slides: HTMLDivElement;
+  slideContainer: HTMLDivElement;
   slideElements: NodeListOf<HTMLElement>;
   totalSlides: number;
-  interval!: number;
+  interval?: NodeJS.Timeout;
   dot: HTMLButtonElement;
   dots: NodeListOf<HTMLButtonElement>;
   dotIndex: number = this.currentIndex - 1;
+  transitionInterval: number = 500; // milliseconds
+  displayDuration: number = 3000;
 
   constructor() {
-    this.slides = document.querySelector(".slides")!;
+    this.slideContainer = document.querySelector(".slides")!;
     this.slideElements = document.querySelectorAll(".slide")!;
     this.totalSlides = this.slideElements.length;
 
     this.dot = document.querySelector(".dot")!;
     this.dots = document.querySelectorAll(".dot")!;
 
-    const firstClone = this.slideElements[0].cloneNode(true) as HTMLDivElement;
-    const lastClone = this.slideElements[this.totalSlides - 1].cloneNode(true) as HTMLDivElement;
+    const firstClone = this.slideElements[0].cloneNode(true);
+    const lastClone = this.slideElements[this.totalSlides - 1].cloneNode(
+      true
+    )
 
     // Добавляем клонированные слайды в начало и конец
-    this.slides.prepend(lastClone);
-    this.slides.append(firstClone);
+    this.slideContainer.prepend(lastClone);
+    this.slideContainer.append(firstClone);
 
     // Сразу устанавливаем translateX на первый реальный слайд
-    this.slides.style.transform = `translateX(-100%)`;
+    this.slideContainer.style.transform = `translateX(-100%)`;
 
-    this.dotSwitcher();
-
-    this.startAutoSlide("next");
+    this.startAutoSlide();
 
     this.dots.forEach((d) => {
-      d.addEventListener("click", (e) => {
-        const target = e.target as HTMLButtonElement;
-        const dotPos = parseInt(target.dataset.pos!);
-        this.goToSlide(dotPos);
-      });
+      d.addEventListener("click", this._clickHandler.bind(this));
     });
+  }
+
+  private _clickHandler(evt: MouseEvent) {
+    const target = evt.target as HTMLButtonElement;
+    const dotPos = parseInt(target.dataset.pos!);
+    this.goToSlide(dotPos);
   }
 
   // Метод для перехода к слайду по индексу
   goToSlide(index: number, withTransition: boolean = true) {
-    clearInterval(this.interval);
     this.currentIndex = index;
 
     withTransition
-      ? (this.slides.style.transition = "transform 0.5s ease")
-      : (this.slides.style.transition = "none");
+      ? (this.slideContainer.style.transition = `transform ${this.transitionInterval}ms ease`)
+      : (this.slideContainer.style.transition = "none");
 
-    this.slides.style.transform = `translateX(-${index * 100}%)`;
+    this.slideContainer.style.transform = `translateX(-${index * 100}%)`;
 
     // Обновляем активные точки
-    this.dotSwitcher();
+    this.updateDotClasses();
 
     // Обрабатываем клоны (при необходимости)
     this.handleCloneEdges();
 
-    this.startAutoSlide('next');
-  }
-
-  moveSlide(direction: direction) {
-    this.updateIndex(direction);
-
-    this.goToSlide(this.currentIndex);
-  }
-
-  // Обновление индекса в зависимости от направления
-  updateIndex(direction: direction) {
-    direction == "next" ? this.currentIndex++ : this.currentIndex--;
-  }
-
-  // Перемещаем слайд в нужное место
-  setSlidePosition() {
-    const offset = -this.currentIndex * 100;
-    this.slides.style.transition = `transform 0.5s ease`;
-    this.slides.style.transform = `translateX(${offset}%)`;
+    // reset the autoSlide interval
+    this.startAutoSlide();
   }
 
   // Обрабатываем границы (переход на клонированные слайды)
   handleCloneEdges() {
     if (this.currentIndex === this.totalSlides + 1) {
+      this.currentIndex = 1;
       setTimeout(() => {
         // Отключаем transition, чтобы скрыть резкий переход
-        this.slides.style.transition = "none";
-        this.currentIndex = 1;
-        this.slides.style.transform = `translateX(-100%)`;
-      }, 500);
-    } else if (this.currentIndex === 0) {
-      setTimeout(() => {
-        this.slides.style.transition = "none";
-        this.currentIndex = this.totalSlides;
-        this.slides.style.transform = `translateX(-${this.totalSlides * 100}%)`;
-      }, 500);
+        this.slideContainer.style.transition = "none";
+        this.slideContainer.style.transform = `translateX(-100%)`;
+      }, this.transitionInterval);
     }
   }
 
-  dotSwitcher() {
+  updateDotClasses() {
     this.dots.forEach((dot) => dot.classList.remove("active"));
 
-    if (this.currentIndex > 0 && this.currentIndex <= this.totalSlides) {
+    if (this.currentIndex > -1 && this.currentIndex <= this.totalSlides) {
       this.dots[this.currentIndex - 1].classList.add("active");
-    } else if (this.currentIndex === 0) {
-      this.dots[this.totalSlides - 1].classList.add("active");
     } else if (this.currentIndex === this.totalSlides + 1) {
       this.dots[0].classList.add("active");
     }
@@ -119,9 +95,12 @@ export class Slider {
     this.dotIndex = this.currentIndex - 1;
   }
 
-  startAutoSlide(direction: direction) {
+  startAutoSlide() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
     this.interval = setInterval(() => {
-      this.moveSlide(direction);
-    }, 3000);
+      this.goToSlide(this.currentIndex + 1);
+    }, this.displayDuration);
   }
 }
