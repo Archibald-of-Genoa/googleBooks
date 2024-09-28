@@ -3,31 +3,32 @@
 @tailwind utilities;
 
 @layer components {
+  .header {
+    padding-top: 47px;
+    padding-bottom: 40px;
+    @apply px-5;
+  }
 
+  .dot.active {
+    @apply bg-violet;
+  }
+
+  .dot {
+    @apply bg-pale-violet;
+  }
+
+  li:hover {
+    @apply font-bold text-text-black scale-125;
+
+    cursor: pointer;
+  }
+
+  @media (min-width: 1440px) {
     .header {
-        padding-top: 47px;
-        padding-bottom: 40px;
-        @apply px-5;
+      padding-top: 47px;
+      padding-bottom: 40px;
+      padding-left: 166px;
+      padding-right: 158.16px;
     }
-
-    .dot.active {
-        @apply bg-violet;
-    }
-
-    .dot {
-        @apply bg-pale-violet;
-    }
-
-    
-
-    @media (min-width: 1440px) {
-        .header {
-            padding-top: 47px;
-            padding-bottom: 40px;
-            padding-left: 166px;
-            padding-right: 158.16px;
-    
-        }
-    }
-
+  }
 }
