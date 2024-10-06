@@ -17,8 +17,28 @@
     @apply bg-pale-violet;
   }
 
+  li {
+    position: relative; 
+    padding-left: 14px; 
+  } 
+
+  li.active {
+    @apply scale-125 font-bold text-text-black;
+  }
+  li.active::before {
+    @apply bg-liDot ;
+    content: ""; 
+    position: absolute;
+    left: 0; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    width: 6px; 
+    height: 6px; 
+    border-radius: 50%; 
+  }
+
   li:hover {
-    @apply font-bold text-text-black scale-125;
+    @apply scale-125 font-bold text-text-black;
 
     cursor: pointer;
   }
