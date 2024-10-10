@@ -1,8 +1,5 @@
 import axios from "axios";
 
-// TODO: Not used
-const categoryList = document.getElementById("category-list");
-
 export interface ImageLinks {
   thumbnail: string;
   smallThumbnail: string;
@@ -31,8 +28,7 @@ interface ItemResponse {
   items: Item[];
 }
 
-//TODO: move to .env + dotenv
-const API_KEY = "AIzaSyBGJuUcdJiTAVC-HJ8P29J8IrZU1wRABXU";
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 export async function searchBooks(
   query: string,
