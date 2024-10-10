@@ -11,8 +11,9 @@ interface VolumeInfo {
   authors?: string[];
   title: string;
   averageRating?: number;
-  description: string;
+  description?: string;
   retailPrice?: string;
+  ratingsCount?: number;
 }
 
 interface SaleInfo {
@@ -47,10 +48,12 @@ export async function searchBooks(
   try {
     const response = await axios.get<ItemResponse>(url);
     const itemsList = response.data.items;
+    console.log(response);
     return itemsList.map(({ volumeInfo, saleInfo }: Item) => ({
       image: volumeInfo.imageLinks?.thumbnail || "No image available",
       authors: volumeInfo.authors,
       title: volumeInfo.title,
+      ratingsCount: volumeInfo.ratingsCount,
       averageRating: volumeInfo.averageRating,
       description: volumeInfo.description,
       retailPrice: saleInfo?.retailPrice,
