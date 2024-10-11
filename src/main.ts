@@ -18,40 +18,35 @@ genresList.addEventListener("click", async (event) => {
           const html = String.raw;
           const cardElement = document.createElement("div");
           const ratingCount = obj.ratingsCount
-            ? `
-              <div class="">${obj.ratingsCount}</div>
-              `
+            ? html`<div class="">${obj.ratingsCount} review</div>`
             : "";
-          const authors = obj.authors ? obj.authors.join(", ") : "";
-          cardElement.innerHTML = html`
+          const authors = obj.authors
+            ? html`<h3 class="font-sans text-[10px] text-text-gray">
+                ${obj.authors.join(", ")}</h3>`
+            : "";
+          const description = obj.description
+            ? html`<div class="line-clamp-3 pt-4 font-sans text-[10px] text-text-gray">
+            ${obj.description}</div>`
+            : "";
+            
+
+          const book = html`
             <div class="flex h-[300px] justify-between gap-y-9">
               <div class="flex w-1/2 items-center justify-center">
                 <img src="${obj.image}" alt="${obj.title}" />
               </div>
 
               <div class="flex w-1/2 flex-col items-start justify-center py-12">
-                ${authors
-                  ? `
-              <h3 class="font-sans text-[10px] text-text-gray">
                 ${authors}
-              </h3>
-              `
-                  : ""}
-
-                <h2 class="text-base font-bold text-text-black">
-                  ${obj.title}
-                </h2>
+                <h2 class="text-base font-bold text-text-black">${obj.title}</h2>
                 ${ratingCount}
-                ${obj.description
-                  ? `
-              <div class="line-clamp-3">${obj.description}</div>
-              `
-                  : ""}
-
-                <button>buy now</button>
+                ${description}
               </div>
+
+
             </div>
           `;
+          cardElement.innerHTML = book;
 
           if (cardsList) {
             cardsList.append(cardElement);
