@@ -17,8 +17,8 @@ interface VolumeInfo {
 }
 
 interface RetailPrice {
-  amount: number;
-  currencyCode: string;
+  amount?: number;
+  currencyCode?: string;
 }
 
 interface SaleInfo {
@@ -61,8 +61,10 @@ export async function searchBooks(
       ratingsCount: volumeInfo.ratingsCount,
       averageRating: volumeInfo.averageRating,
       description: volumeInfo.description,
-      currencyCode: saleInfo?.retailPrice?.amount,
-      amount: saleInfo?.retailPrice?.amount,
+      retailPrice: {
+        currencyCode: saleInfo?.retailPrice?.currencyCode,
+        amount: saleInfo?.retailPrice?.amount,
+      },
     }));
   } catch (error) {
     console.error("An error occured while searching for books", error);

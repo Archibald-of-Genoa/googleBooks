@@ -19,7 +19,7 @@ genresList.addEventListener("click", async (event) => {
           const html = String.raw;
           const cardElement = document.createElement("div");
           const ratingCount = obj.ratingsCount
-            ? html`<div class="">${obj.ratingsCount} review</div>`
+            ? html`<div class="text-[10px]">${obj.ratingsCount} review</div>`
             : "";
           const authors = obj.authors
             ? html`<h3 class="font-sans text-[10px] text-text-gray">
@@ -51,17 +51,15 @@ genresList.addEventListener("click", async (event) => {
             </div>`;
           }
 
-          let currencyTemplate;
-          if (obj.retailPrice?.amount && obj.retailPrice.currencyCode) {
-            currencyTemplate = obj.retailPrice
-              ? html`<h2 class="text-base font-bold text-text-black">
+          const currencyTemplate =
+            obj.retailPrice?.amount && obj.retailPrice.currencyCode
+              ? html`<h2 class="text-xs font-bold text-text-black mt-4">
                   ${obj.retailPrice.amount} ${obj.retailPrice.currencyCode}
                 </h2>`
               : "";
-          }
 
           const book = html`
-            <div class="flex h-[300px] justify-between gap-y-9">
+            <div class="flex min-h-[300px] justify-between gap-y-9">
               <div class="flex w-1/2 items-center justify-center">
                 <img src="${obj.image}" alt="${obj.title}" />
               </div>
@@ -71,7 +69,11 @@ genresList.addEventListener("click", async (event) => {
                 <h2 class="text-base font-bold text-text-black">
                   ${obj.title}
                 </h2>
-                ${ratingTemplate} ${ratingCount} ${description} ${currencyTemplate}
+                <div class="flex items-center justify-between gap-[6px]">
+                  ${ratingTemplate} ${ratingCount}
+                </div>
+                ${description} ${currencyTemplate}
+                <button class="btn-primary mt-4">buy now</button>
               </div>
             </div>
           `;
