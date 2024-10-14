@@ -51,6 +51,15 @@ genresList.addEventListener("click", async (event) => {
             </div>`;
           }
 
+          let currencyTemplate;
+          if (obj.retailPrice?.amount && obj.retailPrice.currencyCode) {
+            currencyTemplate = obj.retailPrice
+              ? html`<h2 class="text-base font-bold text-text-black">
+                  ${obj.retailPrice.amount} ${obj.retailPrice.currencyCode}
+                </h2>`
+              : "";
+          }
+
           const book = html`
             <div class="flex h-[300px] justify-between gap-y-9">
               <div class="flex w-1/2 items-center justify-center">
@@ -62,7 +71,7 @@ genresList.addEventListener("click", async (event) => {
                 <h2 class="text-base font-bold text-text-black">
                   ${obj.title}
                 </h2>
-                ${ratingTemplate} ${ratingCount} ${description}
+                ${ratingTemplate} ${ratingCount} ${description} ${currencyTemplate}
               </div>
             </div>
           `;
@@ -77,7 +86,7 @@ genresList.addEventListener("click", async (event) => {
               cardElement.querySelector<HTMLElement>(".rating__active");
             if (ratingActiveElement) {
               initRatings(obj.averageRating);
-              const ratingActiveWidth = obj.averageRating / 0.05; 
+              const ratingActiveWidth = obj.averageRating / 0.05;
               ratingActiveElement.style.width = `${ratingActiveWidth}%`;
             }
           }
