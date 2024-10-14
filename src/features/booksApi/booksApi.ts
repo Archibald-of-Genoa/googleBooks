@@ -6,7 +6,6 @@ export interface ImageLinks {
 }
 
 interface VolumeInfo {
-  image?: string;
   imageLinks?: ImageLinks;
   authors?: string[];
   title: string;
@@ -14,6 +13,10 @@ interface VolumeInfo {
   description?: string;
   retailPrice?: RetailPrice;
   ratingsCount?: number;
+}
+
+interface AccessInfo {
+  id: string;
 }
 
 interface RetailPrice {
@@ -28,17 +31,49 @@ interface SaleInfo {
 interface Item {
   saleInfo?: SaleInfo;
   volumeInfo: VolumeInfo;
+  accessInfo: AccessInfo;
 }
 
 interface ItemResponse {
   items: Item[];
 }
 
+interface Book {
+  id: string;
+  title: string;
+  authors?: string[];
+  image?: ImageLinks['thumbnail'];
+  ratingsCount?: number;
+  averageRating?: number;
+  description?: string;
+  retailPrice?: RetailPrice;
+}
+
 const API_KEY = import.meta.env.VITE_API_KEY;
+
+function createBookObject(
+  volumeInfo: VolumeInfo,
+  accessInfo: AccessInfo,
+  saleInfo?: SaleInfo,
+): Book {
+  return {
+    id: accessInfo.id,
+    title: volumeInfo.title,
+    authors: volumeInfo.authors,
+    image: volumeInfo.imageLinks?.thumbnail || "No image available",
+    ratingsCount: volumeInfo.ratingsCount,
+    averageRating: volumeInfo.averageRating,
+    description: volumeInfo.description,
+    retailPrice: {
+      currencyCode: saleInfo?.retailPrice?.currencyCode,
+      amount: saleInfo?.retailPrice?.amount,
+    },
+  };
+}
 
 export async function searchBooks(
   query: string,
-): Promise<VolumeInfo[] | undefined> {
+): Promise<Book[] | undefined> {
   const params = new URLSearchParams({
     q: `subject:${query}`,
     key: API_KEY,
@@ -54,18 +89,9 @@ export async function searchBooks(
     const response = await axios.get<ItemResponse>(url);
     const itemsList = response.data.items;
     console.log(response);
-    return itemsList.map(({ volumeInfo, saleInfo }: Item) => ({
-      image: volumeInfo.imageLinks?.thumbnail || "No image available",
-      authors: volumeInfo.authors,
-      title: volumeInfo.title,
-      ratingsCount: volumeInfo.ratingsCount,
-      averageRating: volumeInfo.averageRating,
-      description: volumeInfo.description,
-      retailPrice: {
-        currencyCode: saleInfo?.retailPrice?.currencyCode,
-        amount: saleInfo?.retailPrice?.amount,
-      },
-    }));
+    return itemsList.map(({ volumeInfo, saleInfo, accessInfo }: Item): Book => {
+      return createBookObject(volumeInfo, accessInfo, saleInfo);
+    });
   } catch (error) {
     console.error("An error occured while searching for books", error);
   }

@@ -1,6 +1,6 @@
 import { Slider } from "./Slider";
 import { handleActiveLi, genresList } from "./features/genresList";
-import { searchBooks } from "./features/booksApi";
+import { createBookObject, searchBooks } from "./features/booksApi";
 import { initRatings } from "./features/rating";
 
 genresList.addEventListener("click", async (event) => {
@@ -15,27 +15,29 @@ genresList.addEventListener("click", async (event) => {
       if (data && cardsList) {
         cardsList.innerHTML = "";
 
-        for (const { ...obj } of data) {
+        for (const { ...item } of data) {
+          const bookData = encodeURIComponent(JSON.stringify(item));
+
           const html = String.raw;
           const cardElement = document.createElement("div");
-          const ratingCount = obj.ratingsCount
-            ? html`<div class="text-[10px]">${obj.ratingsCount} review</div>`
+          const ratingCount = item.ratingsCount
+            ? html`<div class="text-[10px]">${item.ratingsCount} review</div>`
             : "";
-          const authors = obj.authors
+          const authors = item.authors
             ? html`<h3 class="font-sans text-[10px] text-text-gray">
-                ${obj.authors.join(", ")}
+                ${item.authors.join(", ")}
               </h3>`
             : "";
-          const description = obj.description
+          const description = item.description
             ? html`<div
                 class="line-clamp-3 pt-4 font-sans text-[10px] text-text-gray"
               >
-                ${obj.description}
+                ${item.description}
               </div>`
             : "";
 
           let ratingTemplate = "";
-          if (obj.averageRating) {
+          if (item.averageRating) {
             ratingTemplate = html` <div class="rating">
               <div class="rating__body">
                 <div class="rating__active">
@@ -52,28 +54,30 @@ genresList.addEventListener("click", async (event) => {
           }
 
           const currencyTemplate =
-            obj.retailPrice?.amount && obj.retailPrice.currencyCode
-              ? html`<h2 class="text-xs font-bold text-text-black mt-4">
-                  ${obj.retailPrice.amount} ${obj.retailPrice.currencyCode}
+            item.retailPrice?.amount && item.retailPrice.currencyCode
+              ? html`<h2 class="mt-4 text-xs font-bold text-text-black">
+                  ${item.retailPrice.amount} ${item.retailPrice.currencyCode}
                 </h2>`
               : "";
 
           const book = html`
             <div class="flex min-h-[300px] justify-between gap-y-9">
               <div class="flex w-1/2 items-center justify-center">
-                <img src="${obj.image}" alt="${obj.title}" />
+                <img src="${item.image}" alt="${item.title}" />
               </div>
 
               <div class="flex w-1/2 flex-col items-start justify-center py-12">
                 ${authors}
                 <h2 class="text-base font-bold text-text-black">
-                  ${obj.title}
+                  ${item.title}
                 </h2>
                 <div class="flex items-center justify-between gap-[6px]">
                   ${ratingTemplate} ${ratingCount}
                 </div>
                 ${description} ${currencyTemplate}
-                <button class="btn-primary mt-4">buy now</button>
+                <button class="btn-primary mt-4" data-book="${bookData}">
+                  buy now
+                </button>
               </div>
             </div>
           `;
@@ -83,12 +87,12 @@ genresList.addEventListener("click", async (event) => {
             cardsList.append(cardElement);
           }
 
-          if (obj.averageRating) {
+          if (item.averageRating) {
             const ratingActiveElement =
               cardElement.querySelector<HTMLElement>(".rating__active");
             if (ratingActiveElement) {
-              initRatings(obj.averageRating);
-              const ratingActiveWidth = obj.averageRating / 0.05;
+              initRatings(item.averageRating);
+              const ratingActiveWidth = item.averageRating / 0.05;
               ratingActiveElement.style.width = `${ratingActiveWidth}%`;
             }
           }
@@ -97,6 +101,20 @@ genresList.addEventListener("click", async (event) => {
     }
 
     handleActiveLi(target);
+  }
+});
+
+document.addEventListener("click", (event) => {
+  const target = event.target as HTMLElement;
+
+  if (target.classList.contains("btn-primary")) {
+    const bookData = target.getAttribute("data-book");
+
+    if (bookData) {
+      const bookObject = JSON.parse(decodeURIComponent(bookData));
+
+      console.log(bookObject);
+    }
   }
 });
 
