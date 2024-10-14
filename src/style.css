@@ -41,6 +41,7 @@
   li.active {
     @apply scale-125 font-bold text-text-black;
   }
+  
   li.active::before {
     @apply bg-liDot ;
     content: ""; 
@@ -58,6 +59,62 @@
 
     cursor: pointer;
   }
+
+  .rating {
+    @apply w-16 h-3;
+    display: flex;
+    align-items: flex-end;
+    line-height: 0.75;
+    
+  }
+
+  .rating__body {
+    position: relative;
+
+  }
+
+  .rating__body::before {
+    content: "★★★★★";
+    display: block;
+    color: #EEEDF5;
+  }
+
+  .rating__active {
+    position: absolute;
+    /* width: 50%; */
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+  }
+
+  .rating__active::before {
+    content: "★★★★★";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    color: #F2C94C;
+  }
+
+  .rating__items {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .rating__item {
+    flex: 0 0 20%;
+    height: 100%;
+    opacity: 0;
+
+  }
+
+  
 
   @media (min-width: 1440px) {
     .header {

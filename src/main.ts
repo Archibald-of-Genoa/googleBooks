@@ -1,6 +1,7 @@
 import { Slider } from "./Slider";
 import { handleActiveLi, genresList } from "./features/genresList";
 import { searchBooks } from "./features/booksApi";
+import { initRatings } from "./features/rating";
 
 genresList.addEventListener("click", async (event) => {
   const target = event.target as HTMLElement;
@@ -22,13 +23,33 @@ genresList.addEventListener("click", async (event) => {
             : "";
           const authors = obj.authors
             ? html`<h3 class="font-sans text-[10px] text-text-gray">
-                ${obj.authors.join(", ")}</h3>`
+                ${obj.authors.join(", ")}
+              </h3>`
             : "";
           const description = obj.description
-            ? html`<div class="line-clamp-3 pt-4 font-sans text-[10px] text-text-gray">
-            ${obj.description}</div>`
+            ? html`<div
+                class="line-clamp-3 pt-4 font-sans text-[10px] text-text-gray"
+              >
+                ${obj.description}
+              </div>`
             : "";
-            
+
+          let ratingTemplate = "";
+          if (obj.averageRating) {
+            ratingTemplate = html` <div class="rating">
+              <div class="rating__body">
+                <div class="rating__active">
+                  <div class="rating__items">
+                    <input class="rating__item" type="radio" />
+                    <input class="rating__item" type="radio" />
+                    <input class="rating__item" type="radio" />
+                    <input class="rating__item" type="radio" />
+                    <input class="rating__item" type="radio" />
+                  </div>
+                </div>
+              </div>
+            </div>`;
+          }
 
           const book = html`
             <div class="flex h-[300px] justify-between gap-y-9">
@@ -38,18 +59,27 @@ genresList.addEventListener("click", async (event) => {
 
               <div class="flex w-1/2 flex-col items-start justify-center py-12">
                 ${authors}
-                <h2 class="text-base font-bold text-text-black">${obj.title}</h2>
-                ${ratingCount}
-                ${description}
+                <h2 class="text-base font-bold text-text-black">
+                  ${obj.title}
+                </h2>
+                ${ratingTemplate} ${ratingCount} ${description}
               </div>
-
-
             </div>
           `;
           cardElement.innerHTML = book;
 
           if (cardsList) {
             cardsList.append(cardElement);
+          }
+
+          if (obj.averageRating) {
+            const ratingActiveElement =
+              cardElement.querySelector<HTMLElement>(".rating__active");
+            if (ratingActiveElement) {
+              initRatings(obj.averageRating);
+              const ratingActiveWidth = obj.averageRating / 0.05; 
+              ratingActiveElement.style.width = `${ratingActiveWidth}%`;
+            }
           }
         }
       }
