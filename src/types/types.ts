@@ -13,10 +13,6 @@ export interface VolumeInfo {
   ratingsCount?: number;
 }
 
-export interface AccessInfo {
-  id: string;
-}
-
 export interface RetailPrice {
   amount?: number;
   currencyCode?: string;
@@ -27,9 +23,9 @@ export interface SaleInfo {
 }
 
 export interface Item {
+  id: string;
   saleInfo?: SaleInfo;
   volumeInfo: VolumeInfo;
-  accessInfo: AccessInfo;
 }
 
 export interface ItemResponse {

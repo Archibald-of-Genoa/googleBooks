@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import {
-  AccessInfo,
   Book,
   Item,
   ItemResponse,
@@ -13,12 +12,12 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 
 export function createBookObject(
   volumeInfo: VolumeInfo,
-  accessInfo: AccessInfo,
+  id: string,
   saleInfo?: SaleInfo,
 ): Book {
 
   return {
-    id: accessInfo.id,
+    id: id,
     title: volumeInfo.title,
     authors: volumeInfo.authors,
     image: volumeInfo.imageLinks?.thumbnail || "No image available",
@@ -48,8 +47,8 @@ export async function searchBooks(query: string): Promise<Book[] | undefined> {
     const response = await axios.get<ItemResponse>(url);
     const itemsList = response.data.items;
     console.log(response);
-    return itemsList.map(({ volumeInfo, saleInfo, accessInfo }: Item): Book => {
-      return createBookObject(volumeInfo, accessInfo, saleInfo);
+    return itemsList.map(({ volumeInfo, saleInfo,  id}: Item): Book => {
+      return createBookObject(volumeInfo, id, saleInfo);
     });
   } catch (error) {
     console.error("An error occured while searching for books", error);
