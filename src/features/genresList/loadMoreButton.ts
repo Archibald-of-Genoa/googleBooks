@@ -2,15 +2,12 @@ import { loadBooks } from "../../main";
 
 export function loadMoreButton() {
   const cardsList = document.getElementById("cardsList");
-  const lazyBtn = document.createElement("button");
-  lazyBtn.textContent = "load more";
-  lazyBtn.classList.add("btn-primary", "col-span-2", "justify-self-center");
+  const lazyBtn = document.getElementById("loadMoreButton");
 
   let currentIndex = 6;
 
 
-  if (cardsList) {
-    cardsList.append(lazyBtn);
+  if (cardsList && lazyBtn) {
 
     lazyBtn.addEventListener("click", async () => {
         const category = document.querySelector(".active-category")?.getAttribute("data-category") || "Architecture";
