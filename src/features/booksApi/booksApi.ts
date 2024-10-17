@@ -31,12 +31,12 @@ export function createBookObject(
   };
 }
 
-export async function searchBooks(query: string): Promise<Book[] | undefined> {
+export async function searchBooks(query: string, startIndex = 0): Promise<Book[] | undefined> {
   const params = new URLSearchParams({
     q: `subject:${query}`,
     key: API_KEY,
     printType: "books",
-    startIndex: "0",
+    startIndex: startIndex.toString(),
     maxResults: "6",
     langRestrict: "en",
   });
@@ -51,6 +51,6 @@ export async function searchBooks(query: string): Promise<Book[] | undefined> {
       return createBookObject(volumeInfo, id, saleInfo);
     });
   } catch (error) {
-    console.error("An error occured while searching for books", error);
+    console.error("An error occurred while searching for books", error);
   }
 }

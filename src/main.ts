@@ -9,6 +9,7 @@ import {
   updateButtonState,
   getCart,
 } from "./features/cartOperations";
+import { loadMoreButton } from "./features/genresList/loadMoreButton";
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Инициализация слайдера
@@ -19,15 +20,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Инициализируем обработчики событий для категорий жанров
   initGenreListeners();
+
+  loadMoreButton();
 });
 
-async function loadBooks(category: string) {
+export async function loadBooks(category: string, startIndex = 0) {
   const cardsList = document.getElementById("cardsList");
   if (cardsList) {
-    const data = await searchBooks(category);
+    const data = await searchBooks(category, startIndex);
 
     if (data) {
-      cardsList.innerHTML = ""; // Очищаем список книг
+      if (startIndex === 0) {
+        cardsList.innerHTML = ""; // Очищаем список книг
+      }
 
       data.forEach((item) => {
         const bookData = encodeURIComponent(JSON.stringify(item));
@@ -74,16 +79,16 @@ async function loadBooks(category: string) {
               </h2>`
             : "";
 
-        const book = html`<div class="flex min-h-[300px] justify-between gap-y-9">
+        const book = html`<div
+          class="flex min-h-[300px] justify-between gap-y-9"
+        >
           <div class="flex w-1/2 items-center justify-center">
             <img src="${item.image}" alt="${item.title}" />
           </div>
 
           <div class="flex w-1/2 flex-col items-start justify-center py-12">
             ${authors}
-            <h2 class="text-base font-bold text-text-black">
-              ${item.title}
-            </h2>
+            <h2 class="text-base font-bold text-text-black">${item.title}</h2>
             <div class="flex items-center justify-between gap-[6px]">
               ${ratingTemplate} ${ratingCount}
             </div>
@@ -153,4 +158,3 @@ function initGenreListeners() {
     }
   });
 }
-
