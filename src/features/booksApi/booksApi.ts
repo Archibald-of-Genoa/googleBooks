@@ -1,61 +1,22 @@
 import axios from "axios";
 
-export interface ImageLinks {
-  thumbnail: string;
-  smallThumbnail: string;
-}
-
-interface VolumeInfo {
-  imageLinks?: ImageLinks;
-  authors?: string[];
-  title: string;
-  averageRating?: number;
-  description?: string;
-  retailPrice?: RetailPrice;
-  ratingsCount?: number;
-}
-
-interface AccessInfo {
-  id: string;
-}
-
-interface RetailPrice {
-  amount?: number;
-  currencyCode?: string;
-}
-
-interface SaleInfo {
-  retailPrice?: RetailPrice;
-}
-
-interface Item {
-  saleInfo?: SaleInfo;
-  volumeInfo: VolumeInfo;
-  accessInfo: AccessInfo;
-}
-
-interface ItemResponse {
-  items: Item[];
-}
-
-interface Book {
-  id: string;
-  title: string;
-  authors?: string[];
-  image?: ImageLinks['thumbnail'];
-  ratingsCount?: number;
-  averageRating?: number;
-  description?: string;
-  retailPrice?: RetailPrice;
-}
+import {
+  AccessInfo,
+  Book,
+  Item,
+  ItemResponse,
+  SaleInfo,
+  VolumeInfo,
+} from "../../types";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-function createBookObject(
+export function createBookObject(
   volumeInfo: VolumeInfo,
   accessInfo: AccessInfo,
   saleInfo?: SaleInfo,
 ): Book {
+
   return {
     id: accessInfo.id,
     title: volumeInfo.title,
@@ -71,9 +32,7 @@ function createBookObject(
   };
 }
 
-export async function searchBooks(
-  query: string,
-): Promise<Book[] | undefined> {
+export async function searchBooks(query: string): Promise<Book[] | undefined> {
   const params = new URLSearchParams({
     q: `subject:${query}`,
     key: API_KEY,

@@ -18,11 +18,15 @@
   }
 
   .btn-primary {
-    @apply border border-blue text-blue uppercase text-[8px] font-bold w-[176px] h-[45px]
+    @apply h-[45px] w-[176px] border border-blue text-[8px] font-bold uppercase text-blue;
+  }
+
+  .btn-secondary {
+    @apply border-pale-gray h-[45px] w-[176px] border text-[8px] font-bold uppercase text-text-gray;
   }
 
   .card {
-    @apply grid grid-cols-2 grid-rows-1
+    @apply grid grid-cols-2 grid-rows-1;
   }
 
   .line-clamp-3 {
@@ -34,24 +38,24 @@
   }
 
   li {
-    position: relative; 
-    padding-left: 14px; 
-  } 
+    position: relative;
+    padding-left: 14px;
+  }
 
   li.active {
     @apply scale-125 font-bold text-text-black;
   }
-  
+
   li.active::before {
-    @apply bg-liDot ;
-    content: ""; 
+    @apply bg-liDot;
+    content: "";
     position: absolute;
-    left: 0; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    width: 6px; 
-    height: 6px; 
-    border-radius: 50%; 
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
   }
 
   li:hover {
@@ -61,22 +65,20 @@
   }
 
   .rating {
-    @apply w-16 h-3;
+    @apply h-3 w-16;
     display: flex;
     align-items: flex-end;
     line-height: 0.75;
-    
   }
 
   .rating__body {
     position: relative;
-
   }
 
   .rating__body::before {
     content: "★★★★★";
     display: block;
-    color: #EEEDF5;
+    color: #eeedf5;
   }
 
   .rating__active {
@@ -95,7 +97,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    color: #F2C94C;
+    color: #f2c94c;
   }
 
   .rating__items {
@@ -111,10 +113,7 @@
     flex: 0 0 20%;
     height: 100%;
     opacity: 0;
-
   }
-
-  
 
   @media (min-width: 1440px) {
     .header {
