@@ -10,6 +10,7 @@ import {
   getCart,
 } from "./features/cartOperations";
 import { loadMoreButton } from "./features/genresList/loadMoreButton";
+import { booksCountBadge } from "./features/cartOperations/booksCountBadge";
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Инициализация слайдера
@@ -82,7 +83,7 @@ export async function loadBooks(category: string, startIndex = 0) {
         const book = html`<div
           class="flex min-h-[300px] justify-between gap-y-9"
         >
-          <div class="flex w-1/2 items-center justify-center">
+          <div class="flex w-1/2 items-center justify-center drop-shadow-xl">
             <img src="${item.image}" alt="${item.title}" />
           </div>
 
@@ -120,10 +121,12 @@ export async function loadBooks(category: string, startIndex = 0) {
                 removeFromCart(bookObject);
                 updateButtonState(buyButton, false);
                 console.log("Удалено из корзины:", getCart());
+                booksCountBadge();
               } else {
                 addToCart(bookObject);
                 updateButtonState(buyButton, true);
                 console.log("Добавлено в корзину:", getCart());
+                booksCountBadge();
               }
             }
           });

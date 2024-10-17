@@ -115,6 +115,19 @@
     opacity: 0;
   }
 
+  #booksCount {
+    position: relative;
+  }
+  
+  #booksCount::before {
+    @apply size-4 rounded-full bg-counter-red text-[10px] font-medium text-center;
+    content: attr(data-booksCount);
+    position: absolute;
+    top: 8px;
+    left: 3.84px;
+    color: white;
+  }
+
   @media (min-width: 1440px) {
     .header {
       padding-top: 47px;
