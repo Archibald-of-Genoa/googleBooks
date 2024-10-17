@@ -2,13 +2,7 @@ import { Slider } from "./Slider";
 import { handleActiveLi, genresList } from "./features/genresList";
 import { searchBooks } from "./features/booksApi";
 import { initRatings } from "./features/rating";
-import {
-  isBookInCart,
-  removeFromCart,
-  addToCart,
-  updateButtonState,
-  getCart,
-} from "./features/cartOperations";
+import { Cart, updateButtonState } from "./features/cartOperations";
 import { loadMoreButton } from "./features/genresList/loadMoreButton";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -34,6 +28,7 @@ export async function loadBooks(category: string, startIndex = 0) {
         cardsList.innerHTML = ""; // Очищаем список книг
       }
 
+      const cart = new Cart();
       data.forEach((item) => {
         const bookData = encodeURIComponent(JSON.stringify(item));
         const html = String.raw;
@@ -113,17 +108,17 @@ export async function loadBooks(category: string, startIndex = 0) {
               const bookObject = JSON.parse(decodeURIComponent(bookData));
               console.log(bookObject);
 
-              const inCart = isBookInCart(bookObject); // Проверка, есть ли книга в корзине
+              const inCart = cart.isBookInCart(bookObject); // Проверка, есть ли книга в корзине
               updateButtonState(buyButton, inCart); // Обновляем состояние кнопки
 
               if (inCart) {
-                removeFromCart(bookObject);
+                cart.removeFromCart(bookObject);
                 updateButtonState(buyButton, false);
-                console.log("Удалено из корзины:", getCart());
+                console.log("Удалено из корзины:", cart.toString());
               } else {
-                addToCart(bookObject);
+                cart.addToCart(bookObject);
                 updateButtonState(buyButton, true);
-                console.log("Добавлено в корзину:", getCart());
+                console.log("Добавлено в корзину:", cart.toString());
               }
             }
           });
