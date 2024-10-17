@@ -29,13 +29,6 @@ export class Cart {
     localStorage.setItem("cart", JSON.stringify(this.cart));
   }
 }
-// Переписал на класс потому что ты в этом месте каждый раз в цикле
-// лезешь в loclStorage и парсишь json, эт пипец медленно
-//
-// export function isBookInCart(book: Book): boolean {
-//   const cart = getCart();
-//   return cart.some((item) => item.id === book.id);
-// }
 
 // Функция для обновления состояния кнопки
 export function updateButtonState(button: HTMLElement, inCart: boolean): void {

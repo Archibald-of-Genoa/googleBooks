@@ -106,7 +106,6 @@ export async function loadBooks(category: string, startIndex = 0) {
             const bookData = buyButton.getAttribute("data-book");
             if (bookData) {
               const bookObject = JSON.parse(decodeURIComponent(bookData));
-              console.log(bookObject);
 
               const inCart = cart.isBookInCart(bookObject); // Проверка, есть ли книга в корзине
               updateButtonState(buyButton, inCart); // Обновляем состояние кнопки
@@ -114,11 +113,9 @@ export async function loadBooks(category: string, startIndex = 0) {
               if (inCart) {
                 cart.removeFromCart(bookObject);
                 updateButtonState(buyButton, false);
-                console.log("Удалено из корзины:", cart.toString());
               } else {
                 cart.addToCart(bookObject);
                 updateButtonState(buyButton, true);
-                console.log("Добавлено в корзину:", cart.toString());
               }
             }
           });
