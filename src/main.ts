@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initGenreListeners();
 
   loadMoreButton();
+  updateCartCount();
 });
 
 export async function loadBooks(category: string, startIndex = 0) {
