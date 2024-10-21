@@ -30,6 +30,20 @@ export class Cart {
   }
 }
 
+export function updateCartCount() {
+  const cartCountElement = document.getElementById("booksCount");
+
+  if (cartCountElement) {
+    const cartJson = localStorage.getItem("cart");
+    const cart = cartJson ? JSON.parse(cartJson) : [];
+    const itemCount = cart.length;
+    cartCountElement?.setAttribute("data-booksCount", itemCount > 0 ? String(itemCount) : "");
+
+    // cartCountElement.textContent = itemCount > 0 ? String(itemCount) : "";
+  }
+}
+
+
 // Функция для обновления состояния кнопки
 export function updateButtonState(button: HTMLElement, inCart: boolean): void {
   if (inCart) {

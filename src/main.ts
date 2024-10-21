@@ -2,7 +2,11 @@ import { Slider } from "./Slider";
 import { handleActiveLi, genresList } from "./features/genresList";
 import { searchBooks } from "./features/booksApi";
 import { initRatings } from "./features/rating";
-import { Cart, updateButtonState } from "./features/cartOperations";
+import {
+  Cart,
+  updateButtonState,
+  updateCartCount,
+} from "./features/cartOperations";
 import { loadMoreButton } from "./features/genresList/loadMoreButton";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -113,9 +117,11 @@ export async function loadBooks(category: string, startIndex = 0) {
               if (inCart) {
                 cart.removeFromCart(bookObject);
                 updateButtonState(buyButton, false);
+                updateCartCount();
               } else {
                 cart.addToCart(bookObject);
                 updateButtonState(buyButton, true);
+                updateCartCount();
               }
             }
           });
