@@ -15,6 +15,7 @@ export class Cart {
   public addToCart(book: Book) {
     this.cart.push(book);
     this._sync();
+    updateCartCount();
   }
 
   public isBookInCart(book: Book) {
@@ -23,6 +24,7 @@ export class Cart {
   public removeFromCart(book: Book) {
     this.cart = this.cart.filter((item) => item.id !== book.id);
     this._sync();
+    updateCartCount();
   }
 
   private _sync() {
@@ -37,12 +39,14 @@ export function updateCartCount() {
     const cartJson = localStorage.getItem("cart");
     const cart = cartJson ? JSON.parse(cartJson) : [];
     const itemCount = cart.length;
-    cartCountElement?.setAttribute("data-booksCount", itemCount > 0 ? String(itemCount) : "");
-
-    // cartCountElement.textContent = itemCount > 0 ? String(itemCount) : "";
+    // Устанавливаем атрибут data-booksCount или удаляем его, если в корзине нет книг
+    if (itemCount > 0) {
+      cartCountElement.setAttribute("data-booksCount", String(itemCount));
+    } else {
+      cartCountElement.removeAttribute("data-booksCount");
+    }
   }
 }
-
 
 // Функция для обновления состояния кнопки
 export function updateButtonState(button: HTMLElement, inCart: boolean): void {
@@ -55,4 +59,20 @@ export function updateButtonState(button: HTMLElement, inCart: boolean): void {
     button.classList.add("btn-primary");
     button.classList.remove("btn-secondary");
   }
+}
+
+export function initialButtonStates(cart: Cart) {
+  const buttons = document.querySelectorAll("[data-book]");
+  buttons.forEach((button) => {
+    const bookData = button.getAttribute("data-book");
+    if (bookData) {
+      const bookObject = JSON.parse(decodeURIComponent(bookData)) as Book;
+
+      // Проверяем, есть ли книга в корзине
+      const inCart = cart.isBookInCart(bookObject);
+
+      // Обновляем состояние кнопки
+      updateButtonState(button as HTMLElement, inCart);
+    }
+  });
 }

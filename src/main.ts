@@ -105,7 +105,7 @@ export async function loadBooks(category: string, startIndex = 0) {
         const buyButton = cardElement.querySelector("button");
         if (buyButton) {
           buyButton.addEventListener("click", (event) => {
-            event.stopPropagation(); // Остановим всплытие события
+            event.stopPropagation(); 
 
             const bookData = buyButton.getAttribute("data-book");
             if (bookData) {
@@ -125,6 +125,11 @@ export async function loadBooks(category: string, startIndex = 0) {
               }
             }
           });
+
+          // Добавляем инициализацию состояния кнопки на основе корзины
+          const bookObject = JSON.parse(decodeURIComponent(bookData));
+          const inCart = cart.isBookInCart(bookObject);
+          updateButtonState(buyButton, inCart); // Обновляем состояние кнопки при загрузке
         }
 
         // Инициализация рейтинга

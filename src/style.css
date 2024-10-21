@@ -118,14 +118,18 @@
   #booksCount {
     position: relative;
   }
-  
-  #booksCount::before {
+
+  #booksCount[data-booksCount]::before {
     @apply size-4 rounded-full bg-counter-red text-[10px] font-medium text-center;
     content: attr(data-booksCount);
     position: absolute;
     top: 8px;
     left: 3.84px;
     color: white;
+  }
+  
+  #booksCount:not([data-booksCount])::before {
+    content: none;
   }
 
   @media (min-width: 1440px) {
